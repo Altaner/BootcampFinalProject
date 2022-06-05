@@ -4,11 +4,20 @@ using SanCamp.Domain.Users;
 using System;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using SanCamp.Controllers;
 
 namespace SanCamp.Web.Controllers
 {
+    
     public class UserController : Controller
     {
+        private readonly ILogger<UserController> _logger;
+        public UserController(ILogger<UserController> logger)
+        {
+            _logger = logger;
+        }
         private readonly UserDbContext _context;
         public UserController(UserDbContext context)
         {
@@ -23,11 +32,13 @@ namespace SanCamp.Web.Controllers
         }
         public IActionResult Details()
         {
+            _logger.LogInformation("User list has been shown");
             return View(_context.Users);
         }
         //This method check if user exists before changing of users's account statement
         public IActionResult Index(int? id)
         {
+            _logger.LogInformation("Checking process if user exists");
             if (id == null)
                 return BadRequest();
             User user = _context.Users.Find(id);
@@ -39,6 +50,7 @@ namespace SanCamp.Web.Controllers
         [HttpPost, ActionName("Index")]
         public IActionResult IndexPost(User user)
         {
+            _logger.LogInformation("An user account's statement has been changed.");
             if (ModelState.IsValid)
             {
                 _context.Users.Update(user);
@@ -62,6 +74,7 @@ namespace SanCamp.Web.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Details");
             }
+            _logger.LogInformation("An user has been created.");
             return View(user);
         }
         //This method check if user exists
@@ -81,7 +94,7 @@ namespace SanCamp.Web.Controllers
 
             _context.Users.Remove(user);
             _context.SaveChanges();
-
+            _logger.LogInformation("An user has been deleted.");
             return RedirectToAction("Details");
         }
     }
