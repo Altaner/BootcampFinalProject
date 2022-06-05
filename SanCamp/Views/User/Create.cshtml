@@ -1,0 +1,61 @@
+﻿@model SanCamp.Domain.Users.User
+
+<form method="post">
+    <h1 style="text-align:center;">Kullanici Olustur</h1>
+    <style>
+        table {
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        td {
+            font-size: 20px;
+            padding-right: 100px;
+        }
+    </style>
+    <div asp-validation-summary="All"></div>
+    <table>
+        <tr>
+            <td>
+                <label asp-for="UserName"></label>
+            </td>
+            <td>
+                <input asp-for="UserName" />
+                <span asp-validation-for="UserName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Email"></label>
+            </td>
+            <td>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Password"></label>
+            </td>
+            <td>
+                <input asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" class="kaydetmeButonu">Kaydet</button>
+            </td>
+            <td>
+                <button type="reset" class="kaydetmeButonu">Reset</button>
+            </td>
+        </tr>
+    </table>
+    <a asp-controller="User" asp-action="Create"></a>
+
+</form>
