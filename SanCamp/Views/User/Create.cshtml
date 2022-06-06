@@ -1,7 +1,7 @@
 ﻿@model SanCamp.Domain.Users.User
 
 <form method="post">
-    <h1 style="text-align:center;">Kullanici Olustur</h1>
+    <h1 style="text-align:center;">User Registration</h1>
     <style>
         table {
             margin-left: auto;
@@ -12,6 +12,10 @@
             font-size: 20px;
             padding-right: 100px;
         }
+        .btnApply { background-color: darkgreen;
+                    color: whitesmoke;}
+        .btnDenied { background-color: darkred;
+                    color: whitesmoke;}
     </style>
     <div asp-validation-summary="All"></div>
     <table>
@@ -49,10 +53,10 @@
         </tr>
         <tr>
             <td>
-                <button type="submit" class="kaydetmeButonu">Kaydet</button>
+                <button type="submit" class="btnApply">Apply</button>
             </td>
             <td>
-                <button type="reset" class="kaydetmeButonu">Reset</button>
+                <button type="reset" class="btnDenied", style="btn">Reset</button>
             </td>
         </tr>
     </table>

@@ -1,30 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SanCamp.Data;
-using SanCamp.Domain.Users;
-using System;
-using System.Linq;
-using System.Net;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using SanCamp.Controllers;
+using SanCamp.Data;
+using SanCamp.Data.Repositories.Interfaces;
+using SanCamp.Domain.Users;
+using System.Linq;
 
 namespace SanCamp.Web.Controllers
 {
-    
+
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
-        public UserController(ILogger<UserController> logger)
-        {
-            _logger = logger;
-        }
         private readonly UserDbContext _context;
-        public UserController(UserDbContext context)
+        private readonly IUserRepository _userRepository;
+        private readonly ILogger<UserController> _logger;
+
+        public UserController(UserDbContext context, ILogger<UserController> logger, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
+            _logger = logger;
         }
 
-      
+
 
         public IActionResult Create()
         {
