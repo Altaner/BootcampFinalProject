@@ -5,7 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SanCamp.Data;
+using SanCamp.Data.Repositories;
+using SanCamp.Data.Repositories.Interfaces;
 using Serilog;
+using System;
 
 namespace SanCamp
 {
@@ -21,9 +24,18 @@ namespace SanCamp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddControllersWithViews();
             services.AddDbContext<UserDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +57,8 @@ namespace SanCamp
             app.UseSerilogRequestLogging();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
 

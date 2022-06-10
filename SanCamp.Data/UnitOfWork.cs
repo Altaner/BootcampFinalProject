@@ -10,26 +10,29 @@ namespace SanCamp.Data
     {
         public IUserRepository Users { get; }
         void Complete();
+        public ILoginUserRepository LoginUsers { get; }
     }
 
     public class UnitOfWork : IUnitOfWork
     {
         private readonly UserDbContext _context;
         public IUserRepository Users { get; private set; }
+        public ILoginUserRepository LoginUsers { get; private set; }
         public UnitOfWork(UserDbContext context)
         {
             _context = context;
             Users = new UserRepository(context);
+            LoginUsers = new LoginUserRepository(context);
         }
 
         public void Complete()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context.Dispose();
         }
     }
 }

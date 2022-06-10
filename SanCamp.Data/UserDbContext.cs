@@ -12,5 +12,6 @@ namespace SanCamp.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<LoginUserInfo> LoginUsers { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace SanCamp.Data.Repositories
 {
     public class Repository<T> : IRepository<T> where T: class
     {
-        private protected readonly UserDbContext _context;
+        public readonly UserDbContext _context;
 
         public Repository(UserDbContext context)
         {
