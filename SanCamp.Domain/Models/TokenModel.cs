@@ -6,7 +6,6 @@
     }
     public class TokenValue
     {
-
         public string Token { get; set; }
     }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SanCamp.Domain.Models;
 using SanCamp.Domain.Users;
 using System;
 

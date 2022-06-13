@@ -1,0 +1,60 @@
+﻿@model SanCamp.Domain.Models.QuerySearchResultModel
+@{
+    ViewData["Title"] = "Query";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<em>@TempData["message"]</em>
+
+<h1>What is your dream vacation?</h1>
+
+<form method="get" asp-action="Query" asp-controller="Hotel" enctype="multipart/form-data">
+    <div asp-validation-summary="All"></div>
+    <table>
+        <tr>
+            <td>
+                <label asp-for="QueryModel.Query"></label>
+            </td>
+            <td>
+                <input asp-for="QueryModel.Query" />
+                <span asp-validation-for="QueryModel.Query"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" class="btnApply">Search</button>
+            </td>
+        </tr>
+    </table>
+    <a asp-controller="Hotel" asp-action="Query"></a>
+</form>
+
+@if (Model != null && Model.Cities.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    CityName
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cities)
+            {
+                <tr>
+                    <td>
+                        <form method="post">
+                            <input type="submit" value="@item.Name" asp-route-id="@item.Id" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

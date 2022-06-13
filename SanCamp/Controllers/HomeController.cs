@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SanCamp.Data;
 using SanCamp.Domain.Models;
-using SanCamp.Domain.Users;
 using SanCamp.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,19 +41,21 @@ namespace SanCamp.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                StringContent StringContent = new StringContent(JsonConvert.SerializeObject(loginInfo), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PostAsync("https://service.stage.paximum.com/v2//api/authenticationservice/login", StringContent))
+                StringContent stringContent = new StringContent(JsonConvert.SerializeObject(loginInfo), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PostAsync("https://service.stage.paximum.com/v2/api/authenticationservice/login", stringContent))
                 {
                     TokenModel token = await response.Content.ReadAsAsync<TokenModel>();
                     if (!response.IsSuccessStatusCode)
                     {
+                        _logger.LogInformation("Token failed");
                         ViewBag.Message = "Incorrect Token";
                         return Redirect("Home/Index");
                     }
                     HttpContext.Session.SetString("Token", token.Body.Token);
                 }
                 TempData["message"] = "Login Succsess";
-                return  Redirect("Index");
+                _logger.LogInformation("Login Succsess");
+                return RedirectToAction("Query", "Hotel");
             }
         }
 

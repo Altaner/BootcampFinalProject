@@ -22,7 +22,6 @@ namespace SanCamp.Web.Controllers
         }
 
 
-
         public IActionResult Create()
         {
             return View();
@@ -32,35 +31,30 @@ namespace SanCamp.Web.Controllers
             _logger.LogInformation("User list has been shown");
             return View(_context.Users);
         }
-        //This method check if user exists before changing of users's account statement
-        public IActionResult Index(int? id)
+        
+
+        [ValidateAntiForgeryToken]
+        public IActionResult AccountActivation(int? id)
         {
-            _logger.LogInformation("Checking process if user exists");
-            if (id == null)
-                return BadRequest();
-            User user = _context.Users.Find(id);
-            if (user == null)
-                return NotFound();
-            return View(user);
-        }
-        //This method changes users's account statement
-        [HttpPost, ActionName("Index")]
-        public IActionResult IndexPost(User user)
-        {
-            _logger.LogInformation("An user account's statement has been changed.");
-            if (ModelState.IsValid)
+            var user = _context.Users.FirstOrDefault(_context => _context.Id == id);
+
+            if (user.IsActive == true)
             {
-                _context.Users.Update(user);
+                _context.Users.Find(user.Id).IsActive = false;
                 _context.SaveChanges();
             }
+            else
+            {
+                _context.Users.Find(user.Id).IsActive = true;
+                _context.SaveChanges();
+            }
+            _logger.LogInformation("An user account's activation statement has been changed.");
             return RedirectToAction("Details");
-
-
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //This method creates new users and check required fields
         public IActionResult Create(User user)
         {
             if (user.UserName == null && user.Password == null)
@@ -74,13 +68,15 @@ namespace SanCamp.Web.Controllers
             _logger.LogInformation("An user has been created.");
             return View(user);
         }
-        //This method check if user exists
+
+
         public IActionResult Delete(int? id)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == id);
             return View(user);
         }
-        //This method delete the user
+
+
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {

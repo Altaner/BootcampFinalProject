@@ -1,14 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Serilog;
 using Serilog.Formatting.Json;
+using System;
 
 namespace SanCamp
 {
@@ -28,7 +23,7 @@ namespace SanCamp
 
             try
             {
-                // Writing meaning full messages is very important for logging
+                // Writing meaningful messages are very important for logging
                 // with this tiny message we can get when our web app starts
                 Log.Information("Application Starting Up");
                 CreateHostBuilder(args).Build().Run();

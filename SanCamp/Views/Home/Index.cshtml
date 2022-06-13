@@ -1,8 +1,21 @@
-﻿@model SanCamp.Domain.Users.LoginUserInfo
+﻿@model SanCamp.Domain.Models.QuerySearchResultModel
 @{
     ViewData["Title"] = "Home Page";
 }
-<em>@TempData["message"]</em>
+
 <p>@ViewBag.message</p>
 <h1>Where is your dream vacation?</h1>
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="QueryModel.Query"></label>
+        <input asp-for="QueryModel.Query" />
+        <span asp-validation-for="QueryModel.Query"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="Search">Search City</button>
+    </div>
+    <a asp-controller="Hotel" asp-action="Query"></a>
+</form>
 

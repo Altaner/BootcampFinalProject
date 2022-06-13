@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SanCamp.Domain.Users
 {
@@ -18,6 +19,7 @@ namespace SanCamp.Domain.Users
         public string Password { get; set; }
         public DateTime CreatedDate { get; set; }
         public bool IsDeleted { get; set; }
+        [AllowNull]
         public bool IsActive { get; set; }
     }
 }
