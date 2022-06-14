@@ -38,7 +38,7 @@ namespace SanCamp.Controllers
                 Password = details.Password,
                 User = details.User
             };
-
+            //Getting token and save to Session
             using (var httpClient = new HttpClient())
             {
                 StringContent stringContent = new StringContent(JsonConvert.SerializeObject(loginInfo), Encoding.UTF8, "application/json");

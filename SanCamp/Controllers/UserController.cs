@@ -32,8 +32,8 @@ namespace SanCamp.Web.Controllers
             return View(_context.Users);
         }
         
-
-        [ValidateAntiForgeryToken]
+        
+        [HttpGet]
         public IActionResult AccountActivation(int? id)
         {
             var user = _context.Users.FirstOrDefault(_context => _context.Id == id);

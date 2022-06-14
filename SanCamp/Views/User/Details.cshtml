@@ -38,15 +38,11 @@
                     @Html.DisplayFor(modelItem => item.IsActive)
                 </td>
                 <td>
-                    <a asp-action="Update" asp-route-id="@item.Id">Update</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
                 <td>
                     <a asp-action="AccountActivation" asp-route-id="@item.Id">Activation</a>
                 </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-
             </tr>
         }
     </tbody>

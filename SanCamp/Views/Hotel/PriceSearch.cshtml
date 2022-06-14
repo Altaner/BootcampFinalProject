@@ -1,0 +1,69 @@
+﻿@model PriceSearchResultModel.Root
+@{
+    ViewData["Title"] = "Hotels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Hotels</h1>
+
+@*<form method="post">
+    <a asp-controller="Hotel" asp-action="PriceSearch"></a>
+    <button type="submit" class="btnApply">Search Hotels</button>
+</form>*@
+
+@if (Model.Body != null && Model.Body.Hotels != null)
+{
+
+
+    <table class="table">
+        <thead>
+
+            <tr>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Body.Hotels)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.ThumbnailFull" width="150" height="150">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stars)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Offers[0].Price)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
