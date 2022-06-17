@@ -30,35 +30,36 @@ namespace SanCamp.Controllers
         public async Task<IActionResult> Query(QuerySearchResultModel querySearch)
         {
 
-            if (querySearch != null && querySearch.QueryModel != null)
+            if (querySearch == null || querySearch.QueryModel == null)
             {
+                return View();
+            }
 
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                var accessToken = HttpContext.Session.GetString("Token");
+                var url = "https://service.stage.paximum.com/v2/api/productservice/getarrivalautocomplete";
+                HttpClient client = new HttpClient();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                StringContent stringContent = new StringContent(JsonConvert.SerializeObject(querySearch.QueryModel), Encoding.UTF8, "application/json");
+
+                using var queryResult = await client.PostAsync(url, stringContent);
+                if (queryResult.IsSuccessStatusCode)
                 {
-                    var accessToken = HttpContext.Session.GetString("Token");
-                    var url = "https://service.stage.paximum.com/v2/api/productservice/getarrivalautocomplete";
-                    HttpClient client = new HttpClient();
+                    string apiResult = await queryResult.Content.ReadAsStringAsync();
+                    HotelDetailsModel result = JsonConvert.DeserializeObject<HotelDetailsModel>(apiResult);
+                    QuerySearchResultModel hotelQueryResult = new QuerySearchResultModel();
 
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-                    StringContent stringContent = new StringContent(JsonConvert.SerializeObject(querySearch.QueryModel), Encoding.UTF8, "application/json");
-
-                    using var queryResult = await client.PostAsync(url, stringContent);
-                    if (queryResult.IsSuccessStatusCode)
+                    hotelQueryResult.Cities = result.Body.Items.GroupBy(x => new { x.City.Id, x.City.Name }).Select(i => new City
                     {
-                        string apiResult = await queryResult.Content.ReadAsStringAsync();
-                        HotelDetailsModel result = JsonConvert.DeserializeObject<HotelDetailsModel>(apiResult);
-                        QuerySearchResultModel hotelQueryResult = new QuerySearchResultModel();
-                        
-                        hotelQueryResult.Cities = result.Body.Items.GroupBy(x => new { x.City.Id, x.City.Name }).Select(i => new City
-                        {
-                            Id = i.Key.Id,
-                            Name = i.Key.Name
-                        }).Distinct().ToList();
+                        Id = i.Key.Id,
+                        Name = i.Key.Name
+                    }).Distinct().ToList();
 
-                        _logger.LogInformation("City list has returned");
-                        return View(hotelQueryResult);
-                    }
+                    _logger.LogInformation("City list has returned");
+                    return View(hotelQueryResult);
                 }
             }
             return View();
